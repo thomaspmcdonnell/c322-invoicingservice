@@ -1,30 +1,25 @@
 package edu.iu.c322.invoicingservice.controller;
 
-import edu.iu.c322.invoicingservice.model.Invoice;
-import edu.iu.c322.invoicingservice.model.UpdateStatus;
-import edu.iu.c322.invoicingservice.repository.InvoiceRepository;
-import jakarta.validation.Valid;
+import edu.iu.c322.invoicingservice.model.Order;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceController {
-    private InvoiceRepository repository;
+    private final WebClient orderService;
 
-    public InvoiceController(InvoiceRepository repository) {
-        this.repository = repository;
-    }
-    @PostMapping
-    public int create(@RequestBody Invoice invoice) {
-        return repository.create(invoice);
-    }
-    @GetMapping("/{id}")
-    public Invoice getInvoice(@PathVariable int id) {
-        return repository.getInvoiceByOrder(id);
-    }
-    @PutMapping("/{id}")
-    public void updateStatus(@RequestBody UpdateStatus updateStatus, @PathVariable int id) {
-        repository.update(updateStatus, id);
 
+    public InvoiceController(WebClient.Builder webClientBuilder) {
+        orderService = webClientBuilder.baseUrl("http://localhost:8083").build();
+    }
+
+
+    @GetMapping("/{orderId}")
+    public Mono<Order> findByOrderId(@PathVariable int orderId){
+        return orderService.get().uri("/orders/order/{orderId}", orderId)
+                .retrieve()
+                .bodyToMono(Order.class);
     }
 }

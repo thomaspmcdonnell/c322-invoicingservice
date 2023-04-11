@@ -1,40 +1,21 @@
+
 package edu.iu.c322.invoicingservice.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+import java.util.Date;
+import java.util.List;
+
 public class Invoice {
-    private String orderPlaced;
+    private Date orderPlaced;
+
     private float total;
-    private InvoiceItem invoiceItem;
+
+    private List<InvoiceItem> invoiceItems;
+
     private Payment payment;
 
-    public String getOrderPlaced() {
-        return orderPlaced;
-    }
-
-    public void setOrderPlaced(String orderPlaced) {
-        this.orderPlaced = orderPlaced;
-    }
-
-    public float getTotal() {
-        return total;
-    }
-
-    public void setTotal(float total) {
-        this.total = total;
-    }
-
-    public InvoiceItem getInvoiceItem() {
-        return invoiceItem;
-    }
-
-    public void setInvoiceItem(InvoiceItem invoiceItem) {
-        this.invoiceItem = invoiceItem;
-    }
-
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
 }
